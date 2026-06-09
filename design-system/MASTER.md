@@ -1,4 +1,9 @@
-# Design System — Haircut Test (Barbershop)
+# Design System — Barbershop ROJ (Düsseldorf)
+
+> Echte Geschäftsdaten: Pempelforterstr. 47, 40211 Düsseldorf · Tel. 0211 / 46896955 ·
+> Öffnungszeiten Mo–Fr 9–19 Uhr, Sa 9–18 Uhr, So geschlossen. Dark/Light-Mode mit Toggle.
+> (Projekt-Arbeitstitel war „Haircut Test".)
+
 
 > Source of Truth. Vintage / retro, warm, maskulin, premium.
 > Kuratiert mit `ui-ux-pro-max` (Stil: *Vintage Analog / Retro Film* · Palette: warm brown + amber + cream · Typo: Abril Fatface / Merriweather).

@@ -3,8 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Haircut Test — Barbershop</title>
-  <meta name="description" content="Haircut Test — klassischer Barbershop. Haarschnitt, Bartpflege, Rasur und Styling mit handwerklicher Tradition." />
+  <meta name="color-scheme" content="dark light" />
+  <title>Barbershop ROJ — Düsseldorf</title>
+  <meta name="description" content="Barbershop ROJ in Düsseldorf — klassisches Barbier-Handwerk: Haarschnitt, Bartpflege, Rasur und Pflege. Pempelforterstr. 47, 40211 Düsseldorf." />
+
+  <!-- Theme früh setzen, um Flackern zu vermeiden -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('roj-theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        document.documentElement.classList.toggle('dark', t === 'dark');
+      } catch (e) { document.documentElement.classList.add('dark'); }
+    })();
+  </script>
 
   <!-- Fonts: Abril Fatface (Display), Merriweather (Body), Oswald (Labels) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,19 +26,20 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            bg:       '#1A1410',
-            card:     '#241C16',
-            muted:    '#2E241C',
-            fg:       '#F5E6C8',
-            'fg-muted': '#C9B79A',
-            primary:  '#B45309',
-            secondary:'#92400E',
-            accent:   '#D97706',
-            barber:   '#9A3412',
-            destructive: '#B91C1C',
+            bg:          'rgb(var(--bg) / <alpha-value>)',
+            card:        'rgb(var(--card) / <alpha-value>)',
+            muted:       'rgb(var(--muted) / <alpha-value>)',
+            fg:          'rgb(var(--fg) / <alpha-value>)',
+            'fg-muted':  'rgb(var(--fg-muted) / <alpha-value>)',
+            primary:     'rgb(var(--primary) / <alpha-value>)',
+            secondary:   'rgb(var(--secondary) / <alpha-value>)',
+            accent:      'rgb(var(--accent) / <alpha-value>)',
+            barber:      'rgb(var(--barber) / <alpha-value>)',
+            destructive: 'rgb(var(--destructive) / <alpha-value>)',
           },
           fontFamily: {
             display: ['"Abril Fatface"', 'serif'],
@@ -40,18 +53,31 @@
   </script>
 
   <style>
-    body { background-color:#1A1410; color:#F5E6C8; }
+    /* Light (Default) */
+    :root{
+      --bg:255 251 235;  --card:255 255 255; --muted:245 239 226;
+      --fg:26 20 16;     --fg-muted:107 91 69;
+      --primary:146 64 14; --secondary:146 64 14; --accent:180 83 9;
+      --barber:154 52 18; --destructive:185 28 28;
+    }
+    /* Dark */
+    .dark{
+      --bg:26 20 16;     --card:36 28 22;    --muted:46 36 28;
+      --fg:245 230 200;  --fg-muted:201 183 154;
+      --primary:180 83 9; --secondary:146 64 14; --accent:217 119 6;
+      --barber:154 52 18; --destructive:185 28 28;
+    }
+    body{ background-color:rgb(var(--bg)); color:rgb(var(--fg)); }
+
     /* Warme Film-/Papierkörnung als Textur-Overlay */
     .grain::before{
-      content:""; position:fixed; inset:0; pointer-events:none; z-index:50; opacity:.09;
+      content:""; position:fixed; inset:0; pointer-events:none; z-index:60; opacity:.07;
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
-    .focusable:focus-visible{ outline:2px solid #D97706; outline-offset:3px; }
+    .focusable:focus-visible{ outline:2px solid rgb(var(--accent)); outline-offset:3px; }
     .img-sepia{ filter:sepia(.25) saturate(.9) contrast(1.05); }
-    .barber-pole{
-      background:repeating-linear-gradient(45deg,#9A3412 0 10px,#F5E6C8 10px 20px,#92400E 20px 30px);
-    }
-    /* Sanfte Reveal-Animation, respektiert reduced-motion */
+    .barber-pole{ background:repeating-linear-gradient(45deg,#9A3412 0 10px,#F5E6C8 10px 20px,#92400E 20px 30px); }
+    .price-row{ font-variant-numeric:tabular-nums; }
     .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease-out, transform .6s ease-out; }
     .reveal.in{ opacity:1; transform:none; }
     @media (prefers-reduced-motion: reduce){
@@ -66,131 +92,182 @@
   <!-- ============ NAV ============ -->
   <header class="sticky top-0 z-40 bg-bg/90 backdrop-blur border-b border-fg/10">
     <nav class="mx-auto max-w-content px-5 h-16 flex items-center justify-between">
-      <a href="#top" class="focusable flex items-center gap-3 group" aria-label="Haircut Test Startseite">
+      <a href="#top" class="focusable flex items-center gap-3 group" aria-label="Barbershop ROJ Startseite">
         <span class="h-7 w-7 rounded-sm barber-pole inline-block ring-1 ring-fg/20"></span>
-        <span class="font-display text-2xl leading-none text-fg group-hover:text-accent transition-colors">Haircut&nbsp;Test</span>
+        <span class="font-display text-2xl leading-none text-fg group-hover:text-accent transition-colors">Barbershop&nbsp;ROJ</span>
       </a>
+
       <ul class="hidden md:flex items-center gap-8 font-label text-sm uppercase tracking-wide text-fg-muted">
-        <li><a class="focusable hover:text-fg transition-colors" href="#services">Services</a></li>
+        <li><a class="focusable hover:text-fg transition-colors" href="#preise">Preise</a></li>
         <li><a class="focusable hover:text-fg transition-colors" href="#story">Über uns</a></li>
-        <li><a class="focusable hover:text-fg transition-colors" href="#team">Team</a></li>
+        <li><a class="focusable hover:text-fg transition-colors" href="#warum">Warum ROJ</a></li>
         <li><a class="focusable hover:text-fg transition-colors" href="#reviews">Bewertungen</a></li>
         <li><a class="focusable hover:text-fg transition-colors" href="#visit">Besuch</a></li>
       </ul>
-      <a href="#visit" class="focusable font-label uppercase tracking-wide text-sm bg-accent text-bg px-5 py-2.5 rounded hover:bg-primary transition-colors cursor-pointer">
-        Termin buchen
-      </a>
+
+      <div class="flex items-center gap-2">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle" type="button" aria-label="Zwischen hellem und dunklem Modus wechseln"
+                class="focusable inline-flex h-10 w-10 items-center justify-center rounded border border-fg/15 text-fg hover:text-accent hover:border-accent transition-colors cursor-pointer">
+          <svg class="h-5 w-5 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="h-5 w-5 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+        </button>
+        <a href="#visit" class="focusable font-label uppercase tracking-wide text-sm bg-accent text-bg px-5 py-2.5 rounded hover:bg-primary transition-colors cursor-pointer">
+          Termin buchen
+        </a>
+      </div>
     </nav>
   </header>
 
   <!-- ============ HERO ============ -->
   <section id="top" class="relative overflow-hidden">
     <div class="absolute inset-0 -z-10">
-      <img class="h-full w-full object-cover img-sepia opacity-30"
+      <img class="h-full w-full object-cover img-sepia opacity-30 dark:opacity-30"
            src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1600&q=70"
            alt="" aria-hidden="true" loading="eager" width="1600" height="900" />
-      <div class="absolute inset-0 bg-gradient-to-b from-bg/70 via-bg/85 to-bg"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-bg/80 via-bg/90 to-bg"></div>
     </div>
 
     <div class="mx-auto max-w-content px-5 py-24 md:py-36 text-center">
-      <p class="reveal font-label uppercase tracking-[0.35em] text-accent text-xs md:text-sm mb-5">Klassischer Barbershop · seit 1998</p>
+      <p class="reveal font-label uppercase tracking-[0.35em] text-accent text-xs md:text-sm mb-5">Barbershop · Düsseldorf</p>
       <h1 class="reveal font-display text-5xl md:text-7xl lg:text-8xl leading-[0.95] text-fg max-w-4xl mx-auto">
         Schnitt mit<br>Charakter &amp; Handwerk
       </h1>
       <p class="reveal mt-6 text-fg-muted text-lg md:text-xl max-w-xl mx-auto font-light">
-        Haarschnitt, Bartpflege und die klassische Nassrasur — präzise, in Ruhe, mit warmem Tuch.
+        Haarschnitt, Bartpflege und die klassische Rasur — präzise, in Ruhe, mit ehrlichem Anspruch.
       </p>
       <div class="reveal mt-9 flex flex-col sm:flex-row gap-4 justify-center">
         <a href="#visit" class="focusable font-label uppercase tracking-wide bg-accent text-bg px-8 py-4 rounded hover:bg-primary transition-colors cursor-pointer">Termin buchen</a>
-        <a href="#services" class="focusable font-label uppercase tracking-wide border border-fg/25 text-fg px-8 py-4 rounded hover:border-accent hover:text-accent transition-colors cursor-pointer">Leistungen &amp; Preise</a>
+        <a href="#preise" class="focusable font-label uppercase tracking-wide border border-fg/25 text-fg px-8 py-4 rounded hover:border-accent hover:text-accent transition-colors cursor-pointer">Preisliste ansehen</a>
       </div>
       <div class="reveal mt-10 inline-flex items-center gap-2 text-fg-muted text-sm">
-        <!-- clock icon (Lucide) -->
         <svg class="h-4 w-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Di–Fr 9–19 Uhr · Sa 9–15 Uhr
+        Mo–Fr 9–19 Uhr · Sa 9–18 Uhr
       </div>
     </div>
   </section>
 
-  <!-- ============ SERVICES ============ -->
-  <section id="services" class="py-20 md:py-28">
-    <div class="mx-auto max-w-content px-5">
-      <header class="text-center mb-14">
-        <p class="font-label uppercase tracking-[0.3em] text-accent text-xs mb-3">Leistungen</p>
-        <h2 class="reveal font-display text-4xl md:text-5xl text-fg">Was wir können</h2>
-      </header>
-
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <!-- Card -->
-        <article class="reveal bg-card border border-fg/10 rounded-lg p-7 shadow-[0_8px_24px_rgba(0,0,0,0.25)] hover:border-accent/50 transition-colors">
-          <span class="inline-flex h-12 w-12 items-center justify-center rounded bg-muted text-accent mb-5">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
-          </span>
-          <h3 class="font-display text-2xl text-fg mb-1">Haarschnitt</h3>
-          <p class="text-fg-muted text-sm font-light mb-4">Beratung, Waschen, Schnitt und Finish — abgestimmt auf Kopfform und Typ.</p>
-          <p class="font-label text-accent text-lg">ab 32 €</p>
-        </article>
-
-        <article class="reveal bg-card border border-fg/10 rounded-lg p-7 shadow-[0_8px_24px_rgba(0,0,0,0.25)] hover:border-accent/50 transition-colors">
-          <span class="inline-flex h-12 w-12 items-center justify-center rounded bg-muted text-accent mb-5">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4H5a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Z"/><path d="M7 10v4a5 5 0 0 0 10 0v-4"/></svg>
-          </span>
-          <h3 class="font-display text-2xl text-fg mb-1">Bartpflege</h3>
-          <p class="text-fg-muted text-sm font-light mb-4">Konturen, Trimmen und Pflege mit Öl — für einen sauber definierten Bart.</p>
-          <p class="font-label text-accent text-lg">ab 22 €</p>
-        </article>
-
-        <article class="reveal bg-card border border-fg/10 rounded-lg p-7 shadow-[0_8px_24px_rgba(0,0,0,0.25)] hover:border-accent/50 transition-colors">
-          <span class="inline-flex h-12 w-12 items-center justify-center rounded bg-muted text-accent mb-5">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 4 6 6"/><path d="M3 21l4-1 12-12-3-3L4 17l-1 4Z"/></svg>
-          </span>
-          <h3 class="font-display text-2xl text-fg mb-1">Nassrasur</h3>
-          <p class="text-fg-muted text-sm font-light mb-4">Klassische Rasur mit Messer, warmem Tuch und After-Shave-Balsam.</p>
-          <p class="font-label text-accent text-lg">ab 28 €</p>
-        </article>
-
-        <article class="reveal bg-card border border-fg/10 rounded-lg p-7 shadow-[0_8px_24px_rgba(0,0,0,0.25)] hover:border-accent/50 transition-colors">
-          <span class="inline-flex h-12 w-12 items-center justify-center rounded bg-muted text-accent mb-5">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="m6.34 6.34-2.83 2.83"/><path d="M2 12h4"/><circle cx="12" cy="14" r="6"/></svg>
-          </span>
-          <h3 class="font-display text-2xl text-fg mb-1">Styling</h3>
-          <p class="text-fg-muted text-sm font-light mb-4">Pomade, Wax oder Paste — wir zeigen dir, wie der Look zuhause hält.</p>
-          <p class="font-label text-accent text-lg">ab 15 €</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ STORY ============ -->
-  <section id="story" class="py-20 md:py-28 bg-card/40 border-y border-fg/10">
+  <!-- ============ STORY / ÜBER UNS ============ -->
+  <section id="story" class="py-20 md:py-28">
     <div class="mx-auto max-w-content px-5 grid md:grid-cols-2 gap-12 items-center">
-      <div class="reveal relative">
+      <div class="reveal relative order-2 md:order-1">
         <img class="rounded-lg img-sepia w-full object-cover aspect-[4/5]"
              src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=900&q=70"
              alt="Barbier bei der Arbeit am Stuhl" loading="lazy" width="900" height="1125" />
         <span class="absolute -bottom-4 -left-4 h-16 w-16 rounded barber-pole ring-2 ring-bg hidden sm:block"></span>
       </div>
-      <div class="reveal">
+      <div class="reveal order-1 md:order-2">
         <p class="font-label uppercase tracking-[0.3em] text-accent text-xs mb-3">Über uns</p>
         <h2 class="font-display text-4xl md:text-5xl text-fg mb-6">Handwerk, das man spürt</h2>
         <p class="text-fg-muted font-light leading-relaxed mb-4">
-          Seit über zwei Jahrzehnten steht <span class="text-fg">Haircut Test</span> für ehrliches Barbier-Handwerk:
-          Leder, Messing und warmes Licht — und Barbiere, die sich Zeit nehmen.
+          <span class="text-fg">Barbershop ROJ</span> steht für klassisches Barbier-Handwerk mitten in Düsseldorf.
+          Bei uns zählt die Sorgfalt im Detail: der richtige Schnitt, die saubere Kontur und ein Gespräch auf Augenhöhe.
         </p>
         <p class="text-fg-muted font-light leading-relaxed mb-8">
-          Kein Akkord, kein Lärm. Nur ein guter Schnitt, ein scharfes Messer und ein Gespräch auf Augenhöhe.
+          Ob präziser Fade, gepflegter Bart oder die klassische Rasur — wir arbeiten ruhig, genau und ohne großes Aufheben.
+          Einfach solide Arbeit, auf die man sich verlässt. Mit Termin geht's schneller, Laufkundschaft ist jederzeit willkommen.
         </p>
         <dl class="grid grid-cols-3 gap-6">
-          <div><dt class="font-display text-4xl text-accent">25+</dt><dd class="text-fg-muted text-sm">Jahre</dd></div>
-          <div><dt class="font-display text-4xl text-accent">3</dt><dd class="text-fg-muted text-sm">Barbiere</dd></div>
-          <div><dt class="font-display text-4xl text-accent">12k</dt><dd class="text-fg-muted text-sm">Schnitte</dd></div>
+          <div><dt class="font-display text-4xl text-accent">6</dt><dd class="text-fg-muted text-sm">Tage / Woche</dd></div>
+          <div><dt class="font-display text-4xl text-accent">ab 12 €</dt><dd class="text-fg-muted text-sm">Bartpflege</dd></div>
+          <div><dt class="font-display text-4xl text-accent">100%</dt><dd class="text-fg-muted text-sm">Handarbeit</dd></div>
         </dl>
       </div>
     </div>
   </section>
 
+  <!-- ============ PREISE ============ -->
+  <section id="preise" class="py-20 md:py-28 bg-card/40 border-y border-fg/10">
+    <div class="mx-auto max-w-content px-5">
+      <header class="text-center mb-14">
+        <p class="font-label uppercase tracking-[0.3em] text-accent text-xs mb-3">Preisliste</p>
+        <h2 class="reveal font-display text-4xl md:text-5xl text-fg">Leistungen &amp; Preise</h2>
+      </header>
+
+      <div class="grid gap-8 lg:grid-cols-2">
+        <!-- Herren -->
+        <div class="reveal bg-card border border-fg/10 rounded-lg p-7 md:p-9 shadow-[0_8px_24px_rgba(0,0,0,0.10)]">
+          <div class="flex items-center gap-3 mb-6">
+            <svg class="h-6 w-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+            <h3 class="font-display text-2xl text-fg">Herren</h3>
+          </div>
+          <dl class="divide-y divide-fg/10">
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Haarmaschinenschnitt</dt><dd class="font-label text-fg whitespace-nowrap">15,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Haarschnitt</dt><dd class="font-label text-fg whitespace-nowrap">19,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Waschen, Schneiden, Föhnen &amp; Styling</dt><dd class="font-label text-fg whitespace-nowrap">25,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Bart rasieren &amp; schneiden</dt><dd class="font-label text-fg whitespace-nowrap">12,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Haare färben</dt><dd class="font-label text-fg whitespace-nowrap">ab 25,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Kinderhaarschnitt (bis 10 J.)</dt><dd class="font-label text-fg whitespace-nowrap">15,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Augenbrauen zupfen (mit Faden)</dt><dd class="font-label text-fg whitespace-nowrap">7,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Gesichtsmaske</dt><dd class="font-label text-fg whitespace-nowrap">10,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Gesichtsreinigung</dt><dd class="font-label text-fg whitespace-nowrap">25,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Gesichtswachs</dt><dd class="font-label text-fg whitespace-nowrap">8,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Nasen- oder Ohrenwachs</dt><dd class="font-label text-fg whitespace-nowrap">8,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Gesichtsdampf</dt><dd class="font-label text-fg whitespace-nowrap">3,50 €</dd></div>
+          </dl>
+        </div>
+
+        <!-- Damen -->
+        <div class="reveal bg-card border border-fg/10 rounded-lg p-7 md:p-9 shadow-[0_8px_24px_rgba(0,0,0,0.10)]">
+          <div class="flex items-center gap-3 mb-6">
+            <svg class="h-6 w-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a5 5 0 0 0-5 5c0 2.5 2 4.5 5 5 3-.5 5-2.5 5-5a5 5 0 0 0-5-5Z"/><path d="M12 12v10"/><path d="M9 19h6"/></svg>
+            <h3 class="font-display text-2xl text-fg">Damen</h3>
+          </div>
+          <dl class="divide-y divide-fg/10">
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Haarschnitt</dt><dd class="font-label text-fg whitespace-nowrap">ab 25,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Waschen, Föhnen oder Legen</dt><dd class="font-label text-fg whitespace-nowrap">ab 20,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Waschen, Schneiden &amp; Föhnen</dt><dd class="font-label text-fg whitespace-nowrap">ab 35,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Ansatzfärben (ohne Sch./Fö.)</dt><dd class="font-label text-fg whitespace-nowrap">ab 35,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Färben (ohne Sch./Fö.)</dt><dd class="font-label text-fg whitespace-nowrap">ab 50,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Strähnen</dt><dd class="font-label text-fg whitespace-nowrap">ab 60,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Dauerwelle (ohne Sch./Fö.)</dt><dd class="font-label text-fg whitespace-nowrap">ab 60,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Hochsteckfrisur</dt><dd class="font-label text-fg whitespace-nowrap">ab 60,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Augenbrauen zupfen</dt><dd class="font-label text-fg whitespace-nowrap">7,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Augenbrauen färben</dt><dd class="font-label text-fg whitespace-nowrap">7,00 €</dd></div>
+            <div class="price-row flex items-baseline justify-between gap-4 py-2.5"><dt class="text-fg-muted">Gesicht zupfen</dt><dd class="font-label text-fg whitespace-nowrap">15,00 €</dd></div>
+          </dl>
+        </div>
+      </div>
+      <p class="text-center text-fg-muted/70 text-xs mt-6">Alle Preise inkl. MwSt. · Änderungen vorbehalten.</p>
+    </div>
+  </section>
+
+  <!-- ============ WARUM ROJ ============ -->
+  <section id="warum" class="py-20 md:py-28">
+    <div class="mx-auto max-w-content px-5">
+      <header class="text-center mb-14">
+        <p class="font-label uppercase tracking-[0.3em] text-accent text-xs mb-3">Warum ROJ</p>
+        <h2 class="reveal font-display text-4xl md:text-5xl text-fg">Worauf wir Wert legen</h2>
+      </header>
+      <div class="grid gap-6 md:grid-cols-3">
+        <article class="reveal bg-card border border-fg/10 rounded-lg p-8 text-center">
+          <span class="inline-flex h-12 w-12 items-center justify-center rounded bg-muted text-accent mb-5">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 7.6 8 11 4.6-3.4 8-6 8-11V5l-8-3Z"/></svg>
+          </span>
+          <h3 class="font-display text-2xl text-fg mb-2">Erfahrung</h3>
+          <p class="text-fg-muted font-light text-sm">Geübte Hände, ruhiges Arbeiten und ein Auge für das, was zu dir passt.</p>
+        </article>
+        <article class="reveal bg-card border border-fg/10 rounded-lg p-8 text-center">
+          <span class="inline-flex h-12 w-12 items-center justify-center rounded bg-muted text-accent mb-5">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
+          </span>
+          <h3 class="font-display text-2xl text-fg mb-2">Präzision</h3>
+          <p class="text-fg-muted font-light text-sm">Saubere Konturen, klare Übergänge — gearbeitet wird, bis das Detail stimmt.</p>
+        </article>
+        <article class="reveal bg-card border border-fg/10 rounded-lg p-8 text-center">
+          <span class="inline-flex h-12 w-12 items-center justify-center rounded bg-muted text-accent mb-5">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+          </span>
+          <h3 class="font-display text-2xl text-fg mb-2">Hygiene &amp; Atmosphäre</h3>
+          <p class="text-fg-muted font-light text-sm">Saubere Werkzeuge, ein gepflegter Salon und Zeit für ein gutes Gespräch.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ GALLERY ============ -->
-  <section class="py-20 md:py-28">
+  <!-- TODO: Unsplash-Platzhalter durch echte Fotos vom Barbershop ROJ ersetzen -->
+  <section class="pb-20 md:pb-28">
     <div class="mx-auto max-w-content px-5">
       <header class="text-center mb-14">
         <p class="font-label uppercase tracking-[0.3em] text-accent text-xs mb-3">Galerie</p>
@@ -205,32 +282,9 @@
     </div>
   </section>
 
-  <!-- ============ TEAM ============ -->
-  <section id="team" class="py-20 md:py-28 bg-card/40 border-y border-fg/10">
-    <div class="mx-auto max-w-content px-5">
-      <header class="text-center mb-14">
-        <p class="font-label uppercase tracking-[0.3em] text-accent text-xs mb-3">Team</p>
-        <h2 class="reveal font-display text-4xl md:text-5xl text-fg">Deine Barbiere</h2>
-      </header>
-      <div class="grid gap-8 sm:grid-cols-3">
-        <figure class="reveal text-center">
-          <img class="mx-auto h-40 w-40 rounded-full object-cover img-sepia ring-2 ring-accent/40" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=70" alt="Marlon, Barbier" loading="lazy" width="400" height="400" />
-          <figcaption class="mt-5"><span class="font-display text-2xl text-fg block">Marlon</span><span class="font-label uppercase tracking-wide text-fg-muted text-xs">Master Barber</span></figcaption>
-        </figure>
-        <figure class="reveal text-center">
-          <img class="mx-auto h-40 w-40 rounded-full object-cover img-sepia ring-2 ring-accent/40" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=70" alt="Jonas, Barbier" loading="lazy" width="400" height="400" />
-          <figcaption class="mt-5"><span class="font-display text-2xl text-fg block">Jonas</span><span class="font-label uppercase tracking-wide text-fg-muted text-xs">Fade-Spezialist</span></figcaption>
-        </figure>
-        <figure class="reveal text-center">
-          <img class="mx-auto h-40 w-40 rounded-full object-cover img-sepia ring-2 ring-accent/40" src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&w=400&q=70" alt="David, Barbier" loading="lazy" width="400" height="400" />
-          <figcaption class="mt-5"><span class="font-display text-2xl text-fg block">David</span><span class="font-label uppercase tracking-wide text-fg-muted text-xs">Bart &amp; Rasur</span></figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
   <!-- ============ REVIEWS ============ -->
-  <section id="reviews" class="py-20 md:py-28">
+  <!-- TODO: Beispiel-Bewertungen durch echte Google-Rezensionen ersetzen -->
+  <section id="reviews" class="py-20 md:py-28 bg-card/40 border-y border-fg/10">
     <div class="mx-auto max-w-content px-5">
       <header class="text-center mb-14">
         <p class="font-label uppercase tracking-[0.3em] text-accent text-xs mb-3">Bewertungen</p>
@@ -239,65 +293,53 @@
       <div class="grid gap-6 md:grid-cols-3">
         <blockquote class="reveal bg-card border border-fg/10 rounded-lg p-7">
           <div class="flex gap-1 text-accent mb-4" aria-label="5 von 5 Sternen">
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
+            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
           </div>
-          <p class="text-fg-muted font-light italic mb-5">„Bester Schnitt der Stadt. Man merkt, dass hier mit Liebe zum Detail gearbeitet wird."</p>
+          <p class="text-fg-muted font-light italic mb-5">„Bester Schnitt in der Umgebung. Man merkt, dass hier mit Liebe zum Detail gearbeitet wird."</p>
           <footer class="font-label uppercase tracking-wide text-sm text-fg">— Thomas K.</footer>
         </blockquote>
         <blockquote class="reveal bg-card border border-fg/10 rounded-lg p-7">
           <div class="flex gap-1 text-accent mb-4" aria-label="5 von 5 Sternen">
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
+            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
           </div>
-          <p class="text-fg-muted font-light italic mb-5">„Die Nassrasur mit warmem Tuch ist ein Erlebnis. Komme nur noch hierher."</p>
+          <p class="text-fg-muted font-light italic mb-5">„Die klassische Rasur ist ein Erlebnis. Ruhige Atmosphäre, top Beratung — komme gerne wieder."</p>
           <footer class="font-label uppercase tracking-wide text-sm text-fg">— Sebastian R.</footer>
         </blockquote>
         <blockquote class="reveal bg-card border border-fg/10 rounded-lg p-7">
           <div class="flex gap-1 text-accent mb-4" aria-label="5 von 5 Sternen">
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
-            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
+            <svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg><svg class="h-5 w-5 fill-current" viewBox="0 0 24 24"><path d="m12 2 3 6.5 7 .6-5.3 4.6L18.5 21 12 17.3 5.5 21l1.8-7.3L2 9.1l7-.6L12 2Z"/></svg>
           </div>
-          <p class="text-fg-muted font-light italic mb-5">„Stilvolle Atmosphäre, top Beratung und ein Fade, der sitzt. Klare Empfehlung."</p>
+          <p class="text-fg-muted font-light italic mb-5">„Stilvoller Laden, freundliches Team und ein Fade, der sitzt. Klare Empfehlung."</p>
           <footer class="font-label uppercase tracking-wide text-sm text-fg">— Mehmet A.</footer>
         </blockquote>
       </div>
     </div>
   </section>
 
-  <!-- ============ VISIT / CTA ============ -->
-  <section id="visit" class="py-20 md:py-28 bg-card/40 border-t border-fg/10">
+  <!-- ============ VISIT / BUCHEN ============ -->
+  <section id="visit" class="py-20 md:py-28">
     <div class="mx-auto max-w-content px-5 grid md:grid-cols-2 gap-12">
       <div class="reveal">
-        <p class="font-label uppercase tracking-[0.3em] text-accent text-xs mb-3">Besuch</p>
+        <p class="font-label uppercase tracking-[0.3em] text-accent text-xs mb-3">Besuch &amp; Termin</p>
         <h2 class="font-display text-4xl md:text-5xl text-fg mb-6">Komm vorbei</h2>
-        <p class="text-fg-muted font-light mb-8 max-w-md">Buche online oder ruf an — Laufkundschaft ist willkommen, mit Termin geht's schneller.</p>
+        <p class="text-fg-muted font-light mb-8 max-w-md">Ruf an oder schreib uns über das Formular — Laufkundschaft ist willkommen, mit Termin geht's schneller.</p>
 
         <ul class="space-y-5">
           <li class="flex items-start gap-3">
             <svg class="h-5 w-5 text-accent mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-            <span class="text-fg-muted">Musterstraße 12, 10115 Berlin</span>
+            <a href="https://maps.google.com/?q=Pempelforterstr.+47,+40211+Düsseldorf" target="_blank" rel="noopener" class="focusable text-fg-muted hover:text-accent transition-colors">Pempelforterstr. 47, 40211 Düsseldorf</a>
           </li>
           <li class="flex items-start gap-3">
             <svg class="h-5 w-5 text-accent mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
-            <a href="tel:+493012345678" class="focusable text-fg-muted hover:text-accent transition-colors">+49 30 123 456 78</a>
+            <a href="tel:+4921146896955" class="focusable text-fg-muted hover:text-accent transition-colors">0211 / 46896955</a>
           </li>
           <li class="flex items-start gap-3">
             <svg class="h-5 w-5 text-accent mt-0.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span class="text-fg-muted">Di–Fr 9–19 Uhr · Sa 9–15 Uhr · So/Mo geschlossen</span>
+            <span class="text-fg-muted">Mo–Fr 9–19 Uhr · Sa 9–18 Uhr · So geschlossen</span>
           </li>
         </ul>
 
-        <a href="tel:+493012345678" class="focusable inline-block mt-9 font-label uppercase tracking-wide bg-accent text-bg px-8 py-4 rounded hover:bg-primary transition-colors cursor-pointer">Jetzt anrufen</a>
+        <a href="tel:+4921146896955" class="focusable inline-block mt-9 font-label uppercase tracking-wide bg-accent text-bg px-8 py-4 rounded hover:bg-primary transition-colors cursor-pointer">Jetzt anrufen</a>
       </div>
 
       <!-- Buchungsformular -->
@@ -314,14 +356,18 @@
         <div>
           <label for="service" class="block font-label uppercase tracking-wide text-xs text-fg-muted mb-2">Leistung</label>
           <select id="service" name="service" class="focusable w-full bg-muted border border-fg/10 rounded px-4 py-3 text-fg">
-            <option>Haarschnitt</option>
-            <option>Bartpflege</option>
-            <option>Nassrasur</option>
-            <option>Styling</option>
+            <option>Haarschnitt (Herren)</option>
+            <option>Waschen, Schneiden, Föhnen &amp; Styling</option>
+            <option>Bart rasieren &amp; schneiden</option>
+            <option>Kinderhaarschnitt</option>
+            <option>Haarschnitt (Damen)</option>
+            <option>Färben / Strähnen</option>
+            <option>Sonstiges</option>
           </select>
         </div>
         <button type="submit" class="focusable w-full font-label uppercase tracking-wide bg-accent text-bg px-6 py-4 rounded hover:bg-primary transition-colors cursor-pointer">Anfrage senden</button>
         <p data-success class="hidden text-center text-accent text-sm" role="status">Danke! Wir melden uns telefonisch zur Bestätigung.</p>
+        <p class="text-center text-fg-muted/60 text-xs">Oder direkt anrufen: 0211 / 46896955</p>
       </form>
     </div>
   </section>
@@ -331,22 +377,28 @@
     <div class="mx-auto max-w-content px-5 flex flex-col md:flex-row items-center justify-between gap-6">
       <a href="#top" class="focusable flex items-center gap-3">
         <span class="h-6 w-6 rounded-sm barber-pole inline-block ring-1 ring-fg/20"></span>
-        <span class="font-display text-xl text-fg">Haircut Test</span>
+        <span class="font-display text-xl text-fg">Barbershop ROJ</span>
       </a>
-      <p class="text-fg-muted text-sm">© 2026 Haircut Test Barbershop · Musterstraße 12, Berlin</p>
+      <p class="text-fg-muted text-sm text-center">© 2026 Barbershop ROJ · Pempelforterstr. 47, 40211 Düsseldorf</p>
       <div class="flex gap-5 text-fg-muted">
         <a href="#" aria-label="Instagram" class="focusable hover:text-accent transition-colors"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-        <a href="#" aria-label="Facebook" class="focusable hover:text-accent transition-colors"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3Z"/></svg></a>
+        <a href="https://maps.google.com/?q=Pempelforterstr.+47,+40211+Düsseldorf" target="_blank" rel="noopener" aria-label="Auf Karte ansehen" class="focusable hover:text-accent transition-colors"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></a>
       </div>
     </div>
   </footer>
 
   <script>
+    // Theme-Toggle
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+      var isDark = document.documentElement.classList.toggle('dark');
+      try { localStorage.setItem('roj-theme', isDark ? 'dark' : 'light'); } catch (e) {}
+    });
+
     // Scroll-Reveal (respektiert prefers-reduced-motion via CSS)
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
   </script>
 </body>
 </html>
